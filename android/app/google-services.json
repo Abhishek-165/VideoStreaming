@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "841349819586",
+    "firebase_url": "https://videomanager-dcaa8.firebaseio.com",
+    "project_id": "videomanager-dcaa8",
+    "storage_bucket": "videomanager-dcaa8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:841349819586:android:e4b44622320dc3f6f25f5b",
+        "android_client_info": {
+          "package_name": "com.example.videostreaming"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "841349819586-tne6p8i8g65c557tk9g8nqr2fe9ku205.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC6H4jzNbLDyiOzn6hTqcAmltKFp8_WwUI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "841349819586-tne6p8i8g65c557tk9g8nqr2fe9ku205.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
