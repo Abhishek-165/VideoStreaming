@@ -61,36 +61,18 @@ class _SignUpPageState extends State<SignUpPage> {
 
 
     }).catchError((onError){
-       Fluttertoast.showToast(
-                                      msg: "Account Already Exists",
-                                      toastLength: Toast.LENGTH_SHORT,
-                                      gravity: ToastGravity.SNACKBAR,
-                                      backgroundColor: Colors.black,
-                                      textColor: Colors.white,
-                                      fontSize: 16.0);
+       _message("Account Already Exists");
                                 
     }).timeout(Duration(seconds: 10),
     onTimeout: ()
     {
-       Fluttertoast.showToast(
-                                      msg: "Check Internet Connectivity",
-                                      toastLength: Toast.LENGTH_SHORT,
-                                      gravity: ToastGravity.SNACKBAR,
-                                      backgroundColor: Colors.black,
-                                      textColor: Colors.white,
-                                      fontSize: 16.0);
+       _message("Check Internet Connectivity");
                                 
     });
     }
     else
     {
-       Fluttertoast.showToast(
-                                      msg: "Email and Passowrd can't be empty",
-                                      toastLength: Toast.LENGTH_SHORT,
-                                      gravity: ToastGravity.SNACKBAR,
-                                      backgroundColor: Colors.black,
-                                      textColor: Colors.white,
-                                      fontSize: 16.0);
+      _message("Email and Passowrd can't be empty");
     }
     }
   
