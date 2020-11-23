@@ -101,20 +101,44 @@ _message(String _msg)
   }
 
   goToProfile() {
-
+    
+    FocusScope.of(context).unfocus();
     if(_emailcontroller.text.isNotEmpty && _passwordcontroller.text.isNotEmpty)
     {
-      FirebaseAuth.instance.signInWithEmailAndPassword(email: _emailcontroller.text, password: _passwordcontroller.text).then((value) async{
+       FirebaseAuth.instance.signInWithEmailAndPassword(email: _emailcontroller.text, password: _passwordcontroller.text).then((value) async{
         print(value.user.uid);
+
+
+        if(value.user.emailVerified)
+        {
+          
+            _broker(value.user.uid,_emailcontroller.text);
+        }
+        else
+        {
+          
+           await value.user.sendEmailVerification().then((value) {
+              
+            _message("Verification mail sent!");
+            } ).catchError((onError){
+            _message("Email does't exists!");
+              
+            });
+        }
+
+
+        
       
         
        
-       _broker(value.user.uid,_emailcontroller.text);
+       //_broker(value.user.uid,_emailcontroller.text);
 
 
       }).catchError((e){
        _message("Email or Password is wrong!");
       });
+
+      
     }
     else
     {

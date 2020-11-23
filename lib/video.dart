@@ -181,11 +181,12 @@ class _VideoPageState extends State<VideoPage> {
                   child: TextField(
                     controller: _commentController,
                     decoration: kMessageTextFieldDecoration,
+                   
                   ),
                 ),
                 FlatButton(
                   
-                  onPressed:isEnabled?_writeComment:null,
+                  onPressed:_writeComment,
                   child: Icon(
                     Icons.send,
                     color: Colors.blue,
