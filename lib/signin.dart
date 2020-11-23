@@ -117,13 +117,7 @@ _message(String _msg)
         else
         {
           
-           await value.user.sendEmailVerification().then((value) {
-              
-            _message("Verification mail sent!");
-            } ).catchError((onError){
-            _message("Email does't exists!");
-              
-            });
+           _message("Email is not verified!");
         }
 
 

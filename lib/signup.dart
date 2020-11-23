@@ -23,22 +23,42 @@ class _SignUpPageState extends State<SignUpPage> {
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
    
-
+    _message(String _msg)
+    {
+      Fluttertoast.showToast(
+                                       msg: _msg,
+                                       toastLength: Toast.LENGTH_SHORT,
+                                       gravity: ToastGravity.SNACKBAR,
+                                       backgroundColor: Colors.black,
+                                       textColor: Colors.white,
+                                       fontSize: 16.0);
+    }
   _signUp()
   {
+    FocusScope.of(context).unfocus();
     if(_emailController.text.isNotEmpty && _passwordController.text.isNotEmpty)
     {
-      FirebaseAuth.instance.createUserWithEmailAndPassword(email:_emailController.text , password: _passwordController.text).then((value) {
+      FirebaseAuth.instance.createUserWithEmailAndPassword(email:_emailController.text , password: _passwordController.text).then((value) async{
       
-      Fluttertoast.showToast(
-                                      msg: "Sucessfully Created !",
-                                      toastLength: Toast.LENGTH_SHORT,
-                                      gravity: ToastGravity.SNACKBAR,
-                                      backgroundColor: Colors.black,
-                                      textColor: Colors.white,
-                                      fontSize: 16.0);
+      // Fluttertoast.showToast(
+      //                                 msg: "Sucessfully Created !",
+      //                                 toastLength: Toast.LENGTH_SHORT,
+      //                                 gravity: ToastGravity.SNACKBAR,
+      //                                 backgroundColor: Colors.black,
+      //                                 textColor: Colors.white,
+      //                                 fontSize: 16.0);
+      await value.user.sendEmailVerification().then((value) {
+              
+            _message("Verification mail sent!");
 
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>SignInPage()));
+            
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>SignInPage()));
+
+            } ).catchError((onError){
+            _message("Email does't exists!");
+              
+            });
+
 
     }).catchError((onError){
        Fluttertoast.showToast(
