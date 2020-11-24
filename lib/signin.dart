@@ -9,6 +9,8 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:videostreaming/viewer.dart';
 
+import 'package:shared_preferences/shared_preferences.dart';
+
 class SignInPage extends StatefulWidget {
   @override
   _SignInPageState createState() => _SignInPageState();
@@ -45,6 +47,15 @@ class _SignInPageState extends State<SignInPage> {
   }
 }
 
+setName(String name,String uid) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  //Return String
+   prefs.setString("pageName",name);
+   prefs.setString("UID", uid);
+   print(prefs.getString("pageName"));
+ 
+}
+
 _message(String _msg)
 {
   Fluttertoast.showToast(
@@ -65,16 +76,19 @@ _message(String _msg)
         if(docExists)
         {
           print("exists");
-           collectionReference.doc(userUid).snapshots().listen((event) {
+           collectionReference.doc(userUid).snapshots().listen((event){
            Map checkType = event.data();
 
-           if(checkType['userType']=='CREATOR')
+           if(checkType['userType']=='CREATOR') 
            {
+              setName("CREATOR",userUid);
              _message("Sucessfully Login!");
+            
            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>CreatorPage(userUid)));
            }
            else if(checkType['userType']=='VIEWER')
            {
+              setName("VIEWER",userUid);
              _message("Sucessfully Login!");
            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>ViewerPage(userUid)));
            }

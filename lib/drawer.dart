@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:videostreaming/signin.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DrawerPage extends StatefulWidget {
 
@@ -31,7 +32,12 @@ _message(String _msg)
                 UserAccountsDrawerHeader(currentAccountPicture: CircleAvatar(backgroundImage: NetworkImage(widget.imageUrl),),accountName: Text(widget.name), accountEmail: Text(widget.email)),
                 GestureDetector(onTap: () async
                 {
-                  await FirebaseAuth.instance.signOut().then((value) {
+                  await FirebaseAuth.instance.signOut().then((value) async{
+                    
+                SharedPreferences prefs = await SharedPreferences.getInstance();
+
+                prefs.setString("pageName", "");
+                prefs.setString("UID", "");
                     _message("Sucessfully Sign out!");
                     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>SignInPage()));
                   });
