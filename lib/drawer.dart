@@ -4,6 +4,8 @@ import 'package:videostreaming/signin.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'package:google_sign_in/google_sign_in.dart';
+
 class DrawerPage extends StatefulWidget {
 
   String imageUrl="",name="",email="";
@@ -13,6 +15,9 @@ class DrawerPage extends StatefulWidget {
 }
 
 class _DrawerPageState extends State<DrawerPage> {
+
+
+  final GoogleSignIn googleSignIn = GoogleSignIn();
 
 _message(String _msg)
 {
@@ -32,7 +37,11 @@ _message(String _msg)
                 UserAccountsDrawerHeader(currentAccountPicture: CircleAvatar(backgroundImage: NetworkImage(widget.imageUrl),),accountName: Text(widget.name), accountEmail: Text(widget.email)),
                 GestureDetector(onTap: () async
                 {
+                  
+                   
+                
                   await FirebaseAuth.instance.signOut().then((value) async{
+                    await googleSignIn.signOut();
                     
                 SharedPreferences prefs = await SharedPreferences.getInstance();
 
