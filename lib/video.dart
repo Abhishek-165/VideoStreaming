@@ -5,6 +5,9 @@ import 'package:video_player/video_player.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:chewie/chewie.dart';
 
+import 'package:flutter/services.dart' ;
+ 
+
 
 class VideoPage extends StatefulWidget {
   String id, link, title, userSecondId, timeStamp;
@@ -88,8 +91,12 @@ class _VideoPageState extends State<VideoPage> {
   }
 
   bool isEnabled = false;
+
   @override
   Widget build(BuildContext context) {
+    
+     
+  
     return SafeArea(
         child: Scaffold(
       appBar: AppBar(
@@ -101,101 +108,109 @@ class _VideoPageState extends State<VideoPage> {
           SizedBox(width: 10.0)
         ],
       ),
-      drawer: Drawer(),
-      body: Container(
-        
-              padding: EdgeInsets.symmetric(horizontal: 10.0),
-              child: Column(
-          
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-        FutureBuilder(
-          future: _initialVideoPlayer,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              // If the VideoPlayerController has finished initialization, use
-              // the data it provides to limit the aspect ratio of the VideoPlayer.
-              return Container(
-                
+      
+      body: SafeArea(
+              child: Container(
+            
+          padding: EdgeInsets.symmetric(horizontal: 10.0),
+          child: SingleChildScrollView(
+            physics: ScrollPhysics(),
+                      child: Column(
+                        
+        mainAxisSize: MainAxisSize.min,
+              
+                  
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+              FutureBuilder(
+                  future: _initialVideoPlayer,
+                  builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+            // If the VideoPlayerController has finished initialization, use
+            // the data it provides to limit the aspect ratio of the VideoPlayer.
+            return Container(
+              
                         height: 195,
-                                            child: Chewie(
+                            child: Chewie(
                   controller:  ChewieController(
-        	videoPlayerController: _videoPlayerController1,     
-        	aspectRatio: 16/9,
-        	autoPlay: false,
-        	looping: true,      
-        	errorBuilder: (context, errorMessage) {
-          	return Center(
-            		child: Padding(
-              		padding: const EdgeInsets.all(8.0),
-              		child: Text(
-                			errorMessage,
-                			style: TextStyle(color: Colors.white),
-              		),
+              	videoPlayerController: _videoPlayerController1,     
+              	aspectRatio: 16/9,
+              	autoPlay: false,
+              	looping: true,      
+              	errorBuilder: (context, errorMessage) {
+                  	return Center(
+        		child: Padding(
+            		padding: const EdgeInsets.all(8.0),
+            		child: Text(
+              			errorMessage,
+              			style: TextStyle(color: Colors.white),
             		),
-          	);
-        	},
+        		),
+                  	);
+              	},
   	)
-                ),
-              );
-            } else {
-              // If the VideoPlayerController is still initializing, show a
-              // loading spinner.
-              return Center(child: CircularProgressIndicator());
-            }
-          },
-        ),
-        //title
-
-        ListTile(
-          title: Text(
-            widget.title,
-            style: TextStyle(fontSize: 18.0),
-          ),
-          subtitle: Text(widget.timeStamp),
-        ),
-
-        Divider(
-          thickness: 1.0,
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Text("Comments",
-              style:
-                  TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold)),
-        ),
-        Divider(
-          thickness: 1.0,
-        ),
-        Expanded(child: buildStreamBuilder()),
-        Container(
-            decoration: BoxDecoration(
-              border: Border(
-                top: BorderSide(color: Colors.blue, width: 2.0),
               ),
+            );
+        } else {
+            // If the VideoPlayerController is still initializing, show a
+            // loading spinner.
+            return Center(child: CircularProgressIndicator());
+        }
+                  },
+              ),
+              //title
+
+              ListTile(
+                  title: Text(
+        widget.title,
+        style: TextStyle(fontSize: 18.0),
+                  ),
+                  subtitle: Text(widget.timeStamp),
+              ),
+
+              Divider(
+                  thickness: 1.0,
+              ),
+              Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Text("Comments",
+            style:
+                  TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold)),
+              ),
+              Divider(
+                  thickness: 1.0,
+              ),
+              Flexible(child: buildStreamBuilder()),
+              Container(
+        decoration: BoxDecoration(
+            border: Border(
+              top: BorderSide(color: Colors.blue, width: 2.0),
             ),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Expanded(
+        ),
+        child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(
                   child: TextField(
                     controller: _commentController,
                     decoration: kMessageTextFieldDecoration,
                    
                   ),
-                ),
-                FlatButton(
+              ),
+              FlatButton(
                   
                   onPressed:_writeComment,
                   child: Icon(
                     Icons.send,
                     color: Colors.blue,
                   ),
-                )
-              ],
-            )),
-          ],
-        ),
+              )
+            ],
+        )),
+                  ],
+              ),
+          ),
+          ),
       ),
     ));
   }
@@ -215,7 +230,8 @@ class _VideoPageState extends State<VideoPage> {
                 ),
               )
             : ListView.separated(
-                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
                 itemCount: snapshot.data.docs.length,
                 itemBuilder: (context, index) {
                   DocumentSnapshot video = snapshot.data.docs[index];
