@@ -94,8 +94,11 @@ class _VideoPageState extends State<VideoPage> {
 
   @override
   Widget build(BuildContext context) {
+
+
+
+var isPortrait = MediaQuery.of(context).orientation;
     
-     
   
     return SafeArea(
         child: Scaffold(
@@ -110,13 +113,11 @@ class _VideoPageState extends State<VideoPage> {
       ),
       
       body: SafeArea(
-              child: Container(
+              child: isPortrait==Orientation.portrait? Container(
             
           padding: EdgeInsets.symmetric(horizontal: 10.0),
-          child: SingleChildScrollView(
-            physics: ScrollPhysics(),
-                      child: Column(
-                        
+          child: Column(
+            
         mainAxisSize: MainAxisSize.min,
               
                   
@@ -130,8 +131,8 @@ class _VideoPageState extends State<VideoPage> {
             // the data it provides to limit the aspect ratio of the VideoPlayer.
             return Container(
               
-                        height: 195,
-                            child: Chewie(
+            height: 195,
+                child: Chewie(
                   controller:  ChewieController(
               	videoPlayerController: _videoPlayerController1,     
               	aspectRatio: 16/9,
@@ -180,7 +181,7 @@ class _VideoPageState extends State<VideoPage> {
               Divider(
                   thickness: 1.0,
               ),
-              Flexible(child: buildStreamBuilder()),
+              Expanded(child: buildStreamBuilder()),
               Container(
         decoration: BoxDecoration(
             border: Border(
@@ -209,9 +210,17 @@ class _VideoPageState extends State<VideoPage> {
         )),
                   ],
               ),
-          ),
-          ),
-      ),
+          )
+
+
+
+
+:Text("hello")
+
+
+
+
+ ),
     ));
   }
 
@@ -230,8 +239,6 @@ class _VideoPageState extends State<VideoPage> {
                 ),
               )
             : ListView.separated(
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
                 itemCount: snapshot.data.docs.length,
                 itemBuilder: (context, index) {
                   DocumentSnapshot video = snapshot.data.docs[index];
